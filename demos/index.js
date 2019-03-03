@@ -9,6 +9,7 @@ $('#start-session').on('click', function() {
 
 
     $('#exercise-1').click(function() {
+        console.log("Ex1 clicked");
         $('#myModal').style.display = "block";
     })
 });

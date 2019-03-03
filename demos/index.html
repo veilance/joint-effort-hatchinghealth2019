@@ -38,11 +38,18 @@
 
             <!-- Modal content -->
             <div class="modal-content">
-                <span class="close">&times;</span>
-                <h1>Congratulations!</h1>>
+                <!-- <span class="close">&times;</span> -->
+                <h1>Congratulations!</h1>
                 <p>You are one step closer to dancing again. Make sure you complete your exercises everyday.</p>
-                <button>Return to main menu</button>
+                <button id="modal-close-btn">Return to main menu</button>
             </div>
+            <script>
+                let btn = document.getElementById("modal-close-btn");
+                btn.onclick = function() {
+                    let modal = document.getElementById("myModal");
+                    modal.style.display = "none";
+                }
+            </script>
     </div>
     <div class="wrapper">
         <nav id="sidebar">
@@ -104,8 +111,8 @@
                                     <div class="col-8">
                                         EXERCISE 1
                                     </div>
-                                    <div class="counter col-4">
-                                        10
+                                    <div class="counter col-4" id="ex-counter-1">
+                                        5
                                     </div>
                                 </div>
                             </div>
@@ -117,15 +124,15 @@
                                     <div class="col-8">
                                         EXERCISE 2
                                     </div>
-                                    <div class="counter col-4">
-                                        10
+                                    <div class="counter col-4" id="ex-counter-2">
+                                        5
                                     </div>
                                 </div>
                             </div>
                         </li>
 
 
-                        <li id="excercise-3">
+                        <!-- <li id="excercise-3">
                             <div class="container">
                                 <div class="row font-weight-bold pl-4">
                                     <div class="col-8">
@@ -149,7 +156,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
 
                     <button type="button" class="return-home btn btn-link btn-lg btn-block text-dark">Return to main menu</button>
