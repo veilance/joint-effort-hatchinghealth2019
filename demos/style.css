@@ -4,11 +4,15 @@
     align-items: stretch;
 }
 
+.screen-inactive {
+    display: none;
+}
+
 #sidebar {
     min-width: 350px;
     max-width: 350px;
     min-height: 100vh;
-    padding-top: 100px;
+    padding-top: 70px;
     padding-left: 50px;
     background: #ffffff;
     color: #000000;
@@ -20,12 +24,17 @@
 }
 
 #sidebar .sidebar-header {
-    padding: 20 0 20 0;
+    padding: 2vh 0 2vh 0;
 }
 
-#sidebar ul.components {
-    height: 100%;
-    padding: 20px 0;
+#sidebar .sidebar-body {
+    margin-top: 15vh;
+}
+
+#sidebar .sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 5vh;
 }
 
 #sidebar ul li {
