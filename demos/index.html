@@ -42,7 +42,27 @@
         display: none;
         ">
         </video>
-        <canvas id="output" />
+        <style>
+            .wrapper {
+                display: inline-block;
+                position: relative;
+            }
+            .inner {
+                position: absolute;
+                width: 800px;
+                height: 600px;
+                top: 0px;
+                left: 0px;
+            }
+            #flash {
+                background-color: #1ed36f96;
+                display: none;
+            }
+        </style>
+        <div class="wrapper">
+            <canvas class="inner" id="output" ></canvas>
+            <div class="inner" id="flash"></div>
+        </div>
     </div>
 
     <script src="camera.js"></script>
