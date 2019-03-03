@@ -375,7 +375,6 @@ function detectPoseInRealTime(video, net) {
               console.log(tracker.counter);
               if (tracker.counter === 0) {
                 displayModal();
-                $('#overlay').show();
               }
             }
 
