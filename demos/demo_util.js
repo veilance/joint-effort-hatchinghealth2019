@@ -58,6 +58,10 @@ export function drawSkeleton(keypoints, minConfidence, ctx, scale = 1) {
   });
 }
 
+export function findKeypoint(keypoints, target) {
+  return keypoints.find(element => element.part === target);
+}
+
 // TODO: Check for confidence
 export function drawUpperBody(keypoints, minConfidence, ctx, scale = 1) {
   function findKeypoint(keypoints, target) {

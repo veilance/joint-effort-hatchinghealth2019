@@ -18,7 +18,7 @@ import * as posenet from '@tensorflow-models/posenet';
 import dat from 'dat.gui';
 import Stats from 'stats.js';
 
-import {drawBoundingBox, drawKeypoints, drawSkeleton, drawSegment, drawUpperBody} from './demo_util';
+import {drawBoundingBox, drawKeypoints, drawSkeleton, drawSegment, drawUpperBody, findKeypoint} from './demo_util';
 
 const videoWidth = 800;
 const videoHeight = 600;
@@ -265,8 +265,8 @@ function detectPoseInRealTime(video, net) {
       }
     }
 
-    // Get line through shoulder keypoints
-    
+ 
+
     if (guiState.output.showVideo) {
       ctx.save();
       ctx.scale(-1, 1);
@@ -274,7 +274,7 @@ function detectPoseInRealTime(video, net) {
       ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
       ctx.restore();
     }
-
+    
     // For each pose (i.e. person) detected in an image, loop through the poses
     // and draw the resulting skeleton and keypoints if over certain confidence
     // scores
@@ -291,9 +291,27 @@ function detectPoseInRealTime(video, net) {
         if (guiState.output.showBoundingBox) {
           drawBoundingBox(keypoints, ctx);
         }
+
+        // Get line through shoulder keypoints
+        if (leftShoulder.score > minPartConfidence && rightShoulder.score > minPartConfidence) {
+          // Use left shoulder as marker
+          console.log(leftShoulder);
+          let leftPos = {x: 0, y: leftShoulder.position.y};
+          let rightPos = {x: 400, y: leftShoulder.position.y};
+          const markerColor = 'green';
+          ctx.beginPath();
+          ctx.moveTo(0, leftPos.y);
+          ctx.lineTo(10000, leftPos.y);
+          ctx.strokeStyle = markerColor;
+          ctx.setLineDash([5, 15]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          
+        }
       }
     });
 
+    
 
     // End monitoring code for frames per second
     stats.end();
