@@ -1,0 +1,75 @@
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+.screen-inactive {
+    display: none;
+}
+
+#sidebar {
+    min-width: 350px;
+    max-width: 350px;
+    min-height: 100vh;
+    padding-top: 70px;
+    background: #ffffff;
+    color: #000000;
+    transition: all 0.3s;
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 2vh 0 0 0;
+}
+
+#sidebar .sidebar-body {
+    margin-top: 15vh;
+}
+
+#sidebar .sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 5vh;
+}
+
+#sidebar ul li {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 5px;
+}
+
+#sidebar ul li button {
+    text-align: left;
+    padding-left: 0;
+}
+
+#sidebar ul li button:hover {
+    text-align: left;
+    text-decoration: none;
+}
+
+#sidebar ul li button:hover {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#excercise-screen ul li.active {
+    background: #dee2e6;
+}
+
+#excercise-screen ul li .counter{
+    text-align: right;
+}
+
+#excercise-screen ul li .container{
+    height: 100%;
+}
+
+#excercise-screen #excercise-header {
+    letter-spacing: 0.25em;
+}
