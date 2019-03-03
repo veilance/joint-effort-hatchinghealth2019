@@ -58,6 +58,10 @@ export function drawSkeleton(keypoints, minConfidence, ctx, scale = 1) {
   });
 }
 
+export function findKeypoint(keypoints, target) {
+  return keypoints.find(element => element.part === target);
+}
+
 // TODO: Check for confidence
 export function drawUpperBody(keypoints, minConfidence, ctx, scale = 1) {
   function findKeypoint(keypoints, target) {
@@ -69,28 +73,59 @@ export function drawUpperBody(keypoints, minConfidence, ctx, scale = 1) {
         toTuple(p1.position), toTuple(p2.position),
         color, scale, ctx);
   }
+  function getAdjacentKeyPoints(keypoints, minConfidence) {
+    let adjacentKeyPoints = [];
+    for (let kp1 of keypoints) {
+      if (kp1.score < minConfidence) {
+        continue;
+      }
+      let mindistance = Infinity;
+      let minpoint;
+      for (let kp2 of keypoints) {
+        if (kp1 === kp2 || kp2.score < minConfidence) {
+          continue;
+        }
+        let dist = Math.pow((kp1.position.x - kp2.position.x), 2) + Math.pow((kp1.position.y - kp2.position.y), 2);
+        if (dist < mindistance) {
+          mindistance = dist;
+          minpoint = kp2
+        }
+      }
+      if (minpoint) {
+        adjacentKeyPoints.push([kp1, minpoint]);
+      }
+    }
+    return adjacentKeyPoints;
+  }
   let leftWrist = findKeypoint(keypoints, "leftWrist");
   let leftElbow = findKeypoint(keypoints, "leftElbow");
   let leftShoulder = findKeypoint(keypoints, "leftShoulder");
   let rightWrist = findKeypoint(keypoints, "rightWrist");
   let rightElbow = findKeypoint(keypoints, "rightElbow");
   let rightShoulder = findKeypoint(keypoints, "rightShoulder");
-
-  drawSegmentWithConfidence(
-    leftWrist, leftElbow,
-    color, scale, ctx);
-  drawSegmentWithConfidence(
-    leftElbow, leftShoulder,
-    color, scale, ctx);
-  drawSegmentWithConfidence(
-    leftShoulder, rightShoulder,
-    color, scale, ctx);
-  drawSegmentWithConfidence(
-    rightWrist, rightElbow,
-    color, scale, ctx);
-  drawSegmentWithConfidence(
-    rightElbow, rightShoulder,
-    color, scale, ctx);
+  let upperKeyPoints = [leftWrist, leftElbow, leftShoulder, rightWrist, rightElbow, rightShoulder]
+  const adjacentKeyPoints =
+      getAdjacentKeyPoints(upperKeyPoints, minConfidence);
+  adjacentKeyPoints.forEach((keypoints) => {
+    drawSegment(
+        toTuple(keypoints[0].position), toTuple(keypoints[1].position), color,
+        scale, ctx);
+  });
+  // drawSegmentWithConfidence(
+  //   leftWrist, leftElbow,
+  //   color, scale, ctx);
+  // drawSegmentWithConfidence(
+  //   leftElbow, leftShoulder,
+  //   color, scale, ctx);
+  // drawSegmentWithConfidence(
+  //   leftShoulder, rightShoulder,
+  //   color, scale, ctx);
+  // drawSegmentWithConfidence(
+  //   rightWrist, rightElbow,
+  //   color, scale, ctx);
+  // drawSegmentWithConfidence(
+  //   rightElbow, rightShoulder,
+  //   color, scale, ctx);
 }
 
 /**

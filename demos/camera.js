@@ -18,7 +18,7 @@ import * as posenet from '@tensorflow-models/posenet';
 import dat from 'dat.gui';
 import Stats from 'stats.js';
 
-import {drawBoundingBox, drawKeypoints, drawSkeleton, drawSegment, drawUpperBody} from './demo_util';
+import {drawBoundingBox, drawKeypoints, drawSkeleton, drawSegment, drawUpperBody, findKeypoint} from './demo_util';
 
 const videoWidth = 800;
 const videoHeight = 600;
@@ -85,7 +85,7 @@ const guiState = {
   },
   singlePoseDetection: {
     minPoseConfidence: 0.1,
-    minPartConfidence: 0.5,
+    minPartConfidence: 0.1,
   },
   multiPoseDetection: {
     maxPoseDetections: 5,
@@ -101,7 +101,11 @@ const guiState = {
   },
   net: null,
 };
-
+const tracker = {
+  ex: 'forward',
+  aboveline: false,
+  counter: 3
+}
 /**
  * Sets up dat.gui controller on the top-right of the window
  */
@@ -264,9 +268,12 @@ function detectPoseInRealTime(video, net) {
         rightShoulder = kp
       }
     }
+    let leftWrist = findKeypoint(keypoints, "leftWrist");
+    let leftElbow = findKeypoint(keypoints, "leftElbow");
+    let rightWrist = findKeypoint(keypoints, "rightWrist");
+    let rightElbow = findKeypoint(keypoints, "rightElbow");
+ 
 
-    // Get line through shoulder keypoints
-    
     if (guiState.output.showVideo) {
       ctx.save();
       ctx.scale(-1, 1);
@@ -274,7 +281,7 @@ function detectPoseInRealTime(video, net) {
       ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
       ctx.restore();
     }
-
+    
     // For each pose (i.e. person) detected in an image, loop through the poses
     // and draw the resulting skeleton and keypoints if over certain confidence
     // scores
@@ -284,16 +291,73 @@ function detectPoseInRealTime(video, net) {
           drawKeypoints(keypoints, minPartConfidence, ctx);
         }
         if (guiState.output.showSkeleton) {
-          console.log(keypoints);
           drawUpperBody(keypoints, minPartConfidence, ctx);
           // drawSkeleton(keypoints, minPartConfidence, ctx);
         }
         if (guiState.output.showBoundingBox) {
           drawBoundingBox(keypoints, ctx);
         }
+
+        // Get line through shoulder keypoints
+        if (leftShoulder.score > minPartConfidence && rightShoulder.score > minPartConfidence) {
+          // Use left shoulder as marker
+          let leftPos = {x: 0, y: leftShoulder.position.y};
+          let rightPos = {x: 400, y: leftShoulder.position.y};
+          const markerColor = 'green';
+          ctx.beginPath();
+          ctx.moveTo(0, leftPos.y);
+          ctx.lineTo(10000, leftPos.y);
+          ctx.strokeStyle = markerColor;
+          ctx.setLineDash([5, 15]);
+          ctx.stroke();
+          ctx.setLineDash([]);  
+          
+          // Toggle when arm above shoulders
+          let shoulderHeight = leftShoulder.position.y
+          if (leftWrist.score < minPartConfidence && rightWrist.score < minPartConfidence) {
+            return;
+          }
+          if (tracker.ex === 'side') {
+            if (tracker.aboveline === false && 
+              leftWrist.position.y > shoulderHeight &&
+              leftElbow.position.y > shoulderHeight && 
+              rightWrist.position.y > shoulderHeight &&
+              rightElbow.position.y > shoulderHeight) {
+              tracker.aboveline = true;
+              console.log(tracker.counter);
+              tracker.counter++;
+            }
+            if (tracker.aboveline === true && 
+              leftWrist.position.y < shoulderHeight &&
+              leftElbow.position.y < shoulderHeight && 
+              rightWrist.position.y < shoulderHeight &&
+              rightElbow.position.y < shoulderHeight) {
+              tracker.aboveline = false;
+            }
+          }
+          if (tracker.ex === 'forward') {
+            if (tracker.aboveline === false && 
+              leftWrist.position.y > shoulderHeight &&
+              rightWrist.position.y > shoulderHeight) {
+              tracker.aboveline = true;
+              console.log(tracker.counter);
+              tracker.counter++;
+            }
+            if (tracker.aboveline === true && 
+              leftWrist.position.y < shoulderHeight &&
+              rightWrist.position.y < shoulderHeight) {
+              tracker.aboveline = false;
+            }
+          }
+
+        }
+        
+ 
+
       }
     });
-
+    
+    
 
     // End monitoring code for frames per second
     stats.end();
