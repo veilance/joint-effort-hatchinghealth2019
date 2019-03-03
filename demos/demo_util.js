@@ -104,11 +104,8 @@ export function drawUpperBody(keypoints, minConfidence, ctx, scale = 1) {
   let rightElbow = findKeypoint(keypoints, "rightElbow");
   let rightShoulder = findKeypoint(keypoints, "rightShoulder");
   let upperKeyPoints = [leftWrist, leftElbow, leftShoulder, rightWrist, rightElbow, rightShoulder]
-  upperKeyPoints.forEach((keypoint) => console.log(keypoint.score));
-  console.log("hh", upperKeyPoints)
   const adjacentKeyPoints =
       getAdjacentKeyPoints(upperKeyPoints, minConfidence);
-  console.log(adjacentKeyPoints)
   adjacentKeyPoints.forEach((keypoints) => {
     drawSegment(
         toTuple(keypoints[0].position), toTuple(keypoints[1].position), color,

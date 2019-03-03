@@ -101,7 +101,11 @@ const guiState = {
   },
   net: null,
 };
-
+const tracker = {
+  ex: 'forward',
+  aboveline: false,
+  counter: 3
+}
 /**
  * Sets up dat.gui controller on the top-right of the window
  */
@@ -264,7 +268,10 @@ function detectPoseInRealTime(video, net) {
         rightShoulder = kp
       }
     }
-
+    let leftWrist = findKeypoint(keypoints, "leftWrist");
+    let leftElbow = findKeypoint(keypoints, "leftElbow");
+    let rightWrist = findKeypoint(keypoints, "rightWrist");
+    let rightElbow = findKeypoint(keypoints, "rightElbow");
  
 
     if (guiState.output.showVideo) {
@@ -284,7 +291,6 @@ function detectPoseInRealTime(video, net) {
           drawKeypoints(keypoints, minPartConfidence, ctx);
         }
         if (guiState.output.showSkeleton) {
-          console.log(keypoints);
           drawUpperBody(keypoints, minPartConfidence, ctx);
           // drawSkeleton(keypoints, minPartConfidence, ctx);
         }
@@ -295,7 +301,6 @@ function detectPoseInRealTime(video, net) {
         // Get line through shoulder keypoints
         if (leftShoulder.score > minPartConfidence && rightShoulder.score > minPartConfidence) {
           // Use left shoulder as marker
-          console.log(leftShoulder);
           let leftPos = {x: 0, y: leftShoulder.position.y};
           let rightPos = {x: 400, y: leftShoulder.position.y};
           const markerColor = 'green';
@@ -305,12 +310,53 @@ function detectPoseInRealTime(video, net) {
           ctx.strokeStyle = markerColor;
           ctx.setLineDash([5, 15]);
           ctx.stroke();
-          ctx.setLineDash([]);
+          ctx.setLineDash([]);  
           
+          // Toggle when arm above shoulders
+          let shoulderHeight = leftShoulder.position.y
+          if (leftWrist.score < minPartConfidence && rightWrist.score < minPartConfidence) {
+            return;
+          }
+          if (tracker.ex === 'side') {
+            if (tracker.aboveline === false && 
+              leftWrist.position.y > shoulderHeight &&
+              leftElbow.position.y > shoulderHeight && 
+              rightWrist.position.y > shoulderHeight &&
+              rightElbow.position.y > shoulderHeight) {
+              tracker.aboveline = true;
+              console.log(tracker.counter);
+              tracker.counter++;
+            }
+            if (tracker.aboveline === true && 
+              leftWrist.position.y < shoulderHeight &&
+              leftElbow.position.y < shoulderHeight && 
+              rightWrist.position.y < shoulderHeight &&
+              rightElbow.position.y < shoulderHeight) {
+              tracker.aboveline = false;
+            }
+          }
+          if (tracker.ex === 'forward') {
+            if (tracker.aboveline === false && 
+              leftWrist.position.y > shoulderHeight &&
+              rightWrist.position.y > shoulderHeight) {
+              tracker.aboveline = true;
+              console.log(tracker.counter);
+              tracker.counter++;
+            }
+            if (tracker.aboveline === true && 
+              leftWrist.position.y < shoulderHeight &&
+              rightWrist.position.y < shoulderHeight) {
+              tracker.aboveline = false;
+            }
+          }
+
         }
+        
+ 
+
       }
     });
-
+    
     
 
     // End monitoring code for frames per second
