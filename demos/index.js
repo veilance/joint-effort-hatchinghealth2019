@@ -1,16 +1,17 @@
+import {bindPage} from './camera.js';
+
 $('#start-session').on('click', function() {
     $('#main-screen').addClass('screen-inactive');
     $('#session-screen').removeClass('screen-inactive');
-
-    $('#exercise-1').click(function() {
-        console.log("Ex1 clicked");
-        $('#myModal').style.display = "block";
-    });
+    bindPage();
+    $('#main').show();
 });
 
 $('button.return-to-main').click(function() {
     $('#main-screen').removeClass('screen-inactive');
     $('#session-screen').addClass('screen-inactive');
+    $('#main').hide();
+    $('#main').attr('disabled', true);
 });
 
 /*

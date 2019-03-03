@@ -354,7 +354,7 @@ function detectPoseInRealTime(video, net) {
             console.log(leftArmDist, rightArmDist);
             const armThreshold = 100
             let correctionElement = document.getElementById("correctionModal");
-            if (leftArmDist < armThreshold || rightArmDist < armThreshold) {
+            if ((leftArmDist < armThreshold || rightArmDist < armThreshold) && tracker.counter > 0) {
               console.log("Keep your arms out!");
               correctionElement.style.display = "block";
             } else {
@@ -375,6 +375,7 @@ function detectPoseInRealTime(video, net) {
               console.log(tracker.counter);
               if (tracker.counter === 0) {
                 displayModal();
+                $('#overlay').show();
               }
             }
 
@@ -382,15 +383,9 @@ function detectPoseInRealTime(video, net) {
               tracker.aboveline = false;
             }            
           }
-
         }
-        
- 
-
       }
     });
-    
-    
 
     // End monitoring code for frames per second
     stats.end();
@@ -432,4 +427,3 @@ export async function bindPage() {
 navigator.getUserMedia = navigator.getUserMedia ||
     navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 // kick off the demo
-bindPage();
