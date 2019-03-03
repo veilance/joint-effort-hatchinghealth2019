@@ -85,7 +85,7 @@ const guiState = {
   },
   singlePoseDetection: {
     minPoseConfidence: 0.1,
-    minPartConfidence: 0.5,
+    minPartConfidence: 0.1,
   },
   multiPoseDetection: {
     maxPoseDetections: 5,
