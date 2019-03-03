@@ -166,8 +166,24 @@
             <div id="loading">
                 Loading the model...
             </div>
-        
-            <div id='main' style='display:none'>
+            <style>
+                    .mywrapper {
+                        display: inline-block;
+                        position: relative;
+                    }
+                    .inner {
+                        position: absolute;
+                        width: 800px;
+                        height: 600px;
+                        top: 0px;
+                        left: 0px;
+                    }
+                    #flash {
+                        background-color: #1ed36f96;
+                        display: none;
+                    }
+            </style>
+            <div id='main'>
                 <video id="video" playsinline style=" -moz-transform: scaleX(-1);
                 -o-transform: scaleX(-1);
                 -webkit-transform: scaleX(-1);
@@ -175,7 +191,11 @@
                 display: none;
                 ">
                 </video>
-                <canvas id="output" />
+                
+                <div class="mywrapper">
+                        <canvas class="inner" id="output" ></canvas>
+                        <div class="inner" id="flash">                        
+                </div>
             </div>
         </div>
     </div>

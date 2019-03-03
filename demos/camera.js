@@ -47,6 +47,7 @@ async function setupCamera() {
   }
 
   const video = document.getElementById('video');
+  
   video.width = videoWidth;
   video.height = videoHeight;
 
@@ -84,8 +85,8 @@ const guiState = {
     imageScaleFactor: 0.5,
   },
   singlePoseDetection: {
-    minPoseConfidence: 0.1,
-    minPartConfidence: 0.1,
+    minPoseConfidence: 0.10,
+    minPartConfidence: 0.15,
   },
   multiPoseDetection: {
     maxPoseDetections: 5,
@@ -102,9 +103,10 @@ const guiState = {
   net: null,
 };
 const tracker = {
-  ex: 'forward',
+  ex: 'side',
   aboveline: false,
-  counter: 3
+  counter: 3,
+  timeout: false
 }
 /**
  * Sets up dat.gui controller on the top-right of the window
@@ -190,7 +192,7 @@ function setupGui(cameras, net) {
   });
   // HERE
 }
-
+var flashElem = document.getElementById("flash");
 /**
  * Sets up a frames per second panel on the top-left of the window
  */
@@ -317,37 +319,39 @@ function detectPoseInRealTime(video, net) {
           if (leftWrist.score < minPartConfidence && rightWrist.score < minPartConfidence) {
             return;
           }
-          if (tracker.ex === 'side') {
-            if (tracker.aboveline === false && 
-              leftWrist.position.y > shoulderHeight &&
-              leftElbow.position.y > shoulderHeight && 
-              rightWrist.position.y > shoulderHeight &&
-              rightElbow.position.y > shoulderHeight) {
-              tracker.aboveline = true;
-              console.log(tracker.counter);
-              tracker.counter++;
-            }
-            if (tracker.aboveline === true && 
-              leftWrist.position.y < shoulderHeight &&
-              leftElbow.position.y < shoulderHeight && 
-              rightWrist.position.y < shoulderHeight &&
-              rightElbow.position.y < shoulderHeight) {
-              tracker.aboveline = false;
-            }
+          function turnGreen() {            
+            flashElem.style.display = "inline-block";
+            tracker.timeout = true;
+            setInterval(function() {              
+              flashElem.style.display = "none";
+              tracker.timeout = false;
+            }, 2000);
           }
-          if (tracker.ex === 'forward') {
-            if (tracker.aboveline === false && 
-              leftWrist.position.y > shoulderHeight &&
-              rightWrist.position.y > shoulderHeight) {
+          function turnUngreen() {
+            flashElem.style.display = "none";
+          }
+          
+          function aboveLine(leftWrist, rightWrist, leftElbow, rightElbow, shoulderHeight) {
+            return leftWrist.position.y < shoulderHeight &&
+            leftElbow.position.y < shoulderHeight && 
+            rightWrist.position.y < shoulderHeight &&
+            rightElbow.position.y < shoulderHeight;
+          }
+          let isAbove = aboveLine(leftWrist, rightWrist, leftElbow, rightElbow, shoulderHeight);
+
+          if (tracker.ex === 'side') {
+            if (!tracker.timeout &&
+              !tracker.aboveline &&
+              isAbove) {
               tracker.aboveline = true;
-              console.log(tracker.counter);
+              turnGreen();
               tracker.counter++;
+              console.log(tracker.counter);
             }
-            if (tracker.aboveline === true && 
-              leftWrist.position.y < shoulderHeight &&
-              rightWrist.position.y < shoulderHeight) {
+
+            if (!tracker.timeout && !isAbove) {
               tracker.aboveline = false;
-            }
+            }            
           }
 
         }
