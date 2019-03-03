@@ -58,19 +58,19 @@
     display: block;
 }
 
-#excercise-screen ul li.active {
+#session-screen ul li.active {
     background: #dee2e6;
 }
 
-#excercise-screen ul li .counter{
+#session-screen ul li .counter{
     text-align: right;
 }
 
-#excercise-screen ul li .container{
+#session-screen ul li .container{
     height: 100%;
 }
 
-#excercise-screen #excercise-header {
+#session-screen #excercise-header {
     letter-spacing: 0.25em;
 }
 
