@@ -36,7 +36,7 @@
 <body>
     <div class="wrapper">
         <nav id="sidebar">
-            <div id="main-screen">
+            <div id="main-screen" class="screen-inactive">
                 <!-- Sidebar title -->
                 <div class="sidebar-header font-weight-bold h3">
                     Joint Effort
@@ -46,67 +46,102 @@
                 </div>
     
                 <ul class="list-unstyled sidebar-body">
-                    <li class="active">
+                    <li>
                         <button id="start-session" type="button" class="btn btn-link btn-lg btn-block text-dark">Start Session</button>
                     </li>
     
-                    <li class="active">
+                    <li>
                         <button id="your-excerises" type="button" class="btn btn-link btn-lg btn-block text-dark">Your Excerises</button>
                     </li>
     
-                    <li class="active">
+                    <li>
                         <button id="recovery-tracker" type="button" class="btn btn-link btn-lg btn-block text-dark">Recovery Tracker</button>
                     </li>
 
-                    <li class="active">
+                    <li>
                         <button id="motivation" type="button" class="btn btn-link btn-lg btn-block text-dark">Motivation</button>
                     </li>
                 </ul>
             </div>
 
-            <div id="excerise-screen" class="screen-inactive">
+            <div id="excercise-screen">
                     <!-- Sidebar title -->
-                    <div class="sidebar-header font-weight-bold h3">
-                        Joint Effort
+                    <div class="sidebar-header font-weight-bold pl-5 h3">
+                        Session in Progress
                     </div>
-                    <div class="sidebar-subheader h5">
-                        Your next step to recovery
+                    <div class="sidebar-subheader pl-5">
+                        Follow the exercises listed below.
                     </div>
         
                     <ul class="list-unstyled sidebar-body">
-                        <li class="active">
+                        <li id="excercise-header">
                             <div class="container">
-                                <div id="excerise-1" class="row">
-                                    <div class="name col-8">
-                                      <h4> Excerise 1 </h4>
+                                <div class="row font-weight-bold text-muted pl-4">
+                                    <div class="col-8">
+                                        EXERCISE
                                     </div>
-                                  <div class="counter col-4">5</div>
+                                    <div class="counter col-4">
+                                        REPS
+                                    </div>
                                 </div>
                             </div>
                         </li>
-        
-                        <li class="active">
+
+                        <li id="excercise-1" class="active">
                             <div class="container">
-                                <div id="excerise-2" class="row">
-                                    <div class="name col-8">
-                                        <h4> Excerise 2 </h4>
+                                <div class="row font-weight-bold pl-4">
+                                    <div class="col-8">
+                                        EXERCISE 1
                                     </div>
-                                    <div class="counter col-4">5</div>
+                                    <div class="counter col-4">
+                                        10
+                                    </div>
                                 </div>
                             </div>
                         </li>
-        
-                        <li class="active">
+
+                        <li id="excercise-2">
                             <div class="container">
-                                <div id="excerise-2" class="row">
-                                    <div class="name col-8">
-                                        <h4> Excerise 3 </h4>
+                                <div class="row font-weight-bold pl-4">
+                                    <div class="col-8">
+                                        EXERCISE 2
                                     </div>
-                                    <div class="counter col-4">5</div>
+                                    <div class="counter col-4">
+                                        10
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <li id="excercise-3">
+                            <div class="container">
+                                <div class="row font-weight-bold pl-4">
+                                    <div class="col-8">
+                                        EXERCISE 3
+                                    </div>
+                                    <div class="counter col-4">
+                                        10
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li id="excercise-4">
+                            <div class="container">
+                                <div class="row font-weight-bold pl-4">
+                                    <div class="col-8">
+                                        EXERCISE 4
+                                    </div>
+                                    <div class="counter col-4">
+                                        5
+                                    </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
+
+                    <button type="button" class="return-home btn btn-link btn-lg btn-block text-dark">Return to main menu</button>
                 </div>
 
             <div class="sidebar-footer">

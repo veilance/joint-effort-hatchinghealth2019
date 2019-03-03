@@ -13,7 +13,6 @@
     max-width: 350px;
     min-height: 100vh;
     padding-top: 70px;
-    padding-left: 50px;
     background: #ffffff;
     color: #000000;
     transition: all 0.3s;
@@ -38,9 +37,9 @@
 }
 
 #sidebar ul li {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 #sidebar ul li button {
@@ -59,13 +58,18 @@
     display: block;
 }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
+#excercise-screen ul li.active {
+    background: #dee2e6;
 }
 
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: #6d7fcc;
+#excercise-screen ul li .counter{
+    text-align: right;
+}
+
+#excercise-screen ul li .container{
+    height: 100%;
+}
+
+#excercise-screen #excercise-header {
+    letter-spacing: 0.25em;
 }
