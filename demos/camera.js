@@ -19,6 +19,7 @@ import dat from 'dat.gui';
 import Stats from 'stats.js';
 
 import {drawBoundingBox, drawKeypoints, drawSkeleton, drawSegment, drawUpperBody, findKeypoint} from './demo_util';
+import { isPostfixUnaryExpression } from 'typescript';
 
 const videoWidth = 800;
 const videoHeight = 600;
@@ -343,13 +344,31 @@ function detectPoseInRealTime(video, net) {
           }
           let isAbove = aboveLine(leftWrist, rightWrist, leftElbow, rightElbow, shoulderHeight);
 
+          function distance(pos1, pos2) {
+            return Math.sqrt(Math.pow((pos1.x - pos2.x), 2) + Math.pow((pos1.y - pos2.y),2))
+          }
           if (tracker.ex === 'side') {
+            // Alert warning if arms too close together
+            let leftArmDist = distance(leftWrist.position, leftElbow.position);
+            let rightArmDist = distance(rightWrist.position, rightElbow.position);
+            console.log(leftArmDist, rightArmDist);
+            const armThreshold = 100
+            let correctionElement = document.getElementById("correctionModal");
+            if (leftArmDist < armThreshold || rightArmDist < armThreshold) {
+              console.log("Keep your arms out!");
+              correctionElement.style.display = "block";
+            } else {
+              correctionElement.style.display = "none";
+            }
             if (!tracker.timeout &&
               !tracker.aboveline &&
               isAbove) {
               tracker.aboveline = true;
               turnGreen();
               tracker.counter--;
+              if (tracker.counter <= 0) {
+                tracker.counter = 0;
+              }
               let ex1element = document.getElementById("ex-counter-1");
               ex1element.textContent = tracker.counter;
               console.log(ex1element.textContent.trim());
