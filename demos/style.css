@@ -8,11 +8,17 @@
     display: none;
 }
 
+#main {
+    height: 100%;
+    width: 100%;
+}
+
 #sidebar {
-    min-width: 350px;
-    max-width: 350px;
+    min-width: 20vw;
+    max-width: 20vw;
     min-height: 100vh;
     padding-top: 70px;
+    padding-right: 20px;
     background: #ffffff;
     color: #000000;
     transition: all 0.3s;

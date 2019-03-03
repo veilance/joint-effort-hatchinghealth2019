@@ -21,8 +21,8 @@ import Stats from 'stats.js';
 import {drawBoundingBox, drawKeypoints, drawSkeleton, drawSegment, drawUpperBody, findKeypoint} from './demo_util';
 import { isPostfixUnaryExpression } from 'typescript';
 
-const videoWidth = 800;
-const videoHeight = 600;
+const videoWidth = 1500;
+const videoHeight = 920;
 const stats = new Stats();
 
 function isAndroid() {
