@@ -24,7 +24,7 @@
 }
 
 #sidebar .sidebar-header {
-    padding: 2vh 0 2vh 0;
+    padding: 2vh 0 0 0;
 }
 
 #sidebar .sidebar-body {
@@ -45,6 +45,7 @@
 
 #sidebar ul li button {
     text-align: left;
+    padding-left: 0;
 }
 
 #sidebar ul li button:hover {
@@ -62,6 +63,7 @@
     color: #fff;
     background: #6d7fcc;
 }
+
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
