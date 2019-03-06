@@ -21,8 +21,8 @@ import Stats from 'stats.js';
 import {drawBoundingBox, drawKeypoints, drawSkeleton, drawSegment, drawUpperBody, findKeypoint} from './demo_util';
 import { isPostfixUnaryExpression } from 'typescript';
 
-const videoWidth = 800;
-const videoHeight = 600;
+const videoWidth = 1500;
+const videoHeight = 920;
 const stats = new Stats();
 
 function isAndroid() {
@@ -354,7 +354,7 @@ function detectPoseInRealTime(video, net) {
             console.log(leftArmDist, rightArmDist);
             const armThreshold = 100
             let correctionElement = document.getElementById("correctionModal");
-            if (leftArmDist < armThreshold || rightArmDist < armThreshold) {
+            if ((leftArmDist < armThreshold || rightArmDist < armThreshold) && tracker.counter > 0) {
               console.log("Keep your arms out!");
               correctionElement.style.display = "block";
             } else {
@@ -382,15 +382,9 @@ function detectPoseInRealTime(video, net) {
               tracker.aboveline = false;
             }            
           }
-
         }
-        
- 
-
       }
     });
-    
-    
 
     // End monitoring code for frames per second
     stats.end();
@@ -432,4 +426,3 @@ export async function bindPage() {
 navigator.getUserMedia = navigator.getUserMedia ||
     navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 // kick off the demo
-bindPage();

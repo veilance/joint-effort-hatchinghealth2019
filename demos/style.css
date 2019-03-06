@@ -8,11 +8,17 @@
     display: none;
 }
 
+#main {
+    height: 100%;
+    width: 100%;
+}
+
 #sidebar {
-    min-width: 350px;
-    max-width: 350px;
+    min-width: 20vw;
+    max-width: 20vw;
     min-height: 100vh;
     padding-top: 70px;
+    padding-right: 20px;
     background: #ffffff;
     color: #000000;
     transition: all 0.3s;
@@ -58,19 +64,19 @@
     display: block;
 }
 
-#excercise-screen ul li.active {
+#session-screen ul li.active {
     background: #dee2e6;
 }
 
-#excercise-screen ul li .counter{
+#session-screen ul li .counter{
     text-align: right;
 }
 
-#excercise-screen ul li .container{
+#session-screen ul li .container{
     height: 100%;
 }
 
-#excercise-screen #excercise-header {
+#session-screen #excercise-header {
     letter-spacing: 0.25em;
 }
 
